@@ -42,7 +42,7 @@
 //! extern crate test_generator;
 //!
 //! use test_generator::test_resources;
-//!
+//!add attributes to imports
 //! #[test_resources("res/*/input.txt")]
 //! fn verify_resource(resource: &str) {
 //!    assert!(std::path::Path::new(resource).exists());
@@ -123,10 +123,10 @@ extern crate proc_macro;
 use proc_macro::TokenStream;
 
 use self::glob::{glob, Paths};
-use quote::quote;
+use quote::{quote, ToTokens};
 use std::path::PathBuf;
 use syn::parse::{Parse, ParseStream, Result};
-use syn::{parse_macro_input, Expr, ExprLit, Ident, Lit, Token, ItemFn};
+use syn::{parse_macro_input, Attribute, Expr, ExprLit, Ident, Lit, Token, ItemFn};
 
 // Form canonical name without any punctuation/delimiter or special character
 fn canonical_fn_name(s: &str) -> String {
