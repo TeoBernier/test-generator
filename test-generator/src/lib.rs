@@ -243,6 +243,12 @@ pub fn test_resources(attrs: TokenStream, func: TokenStream) -> TokenStream {
 
     let func_ident = func_ast.ident;
 
+    let mut func_attrs = func_ast
+        .attrs
+        .into_iter()
+        .map(Attribute::into_token_stream)
+        .collect::<proc_macro2::TokenStream>();
+
     let paths: Paths = glob(&pattern).expect(&format!("No such file or directory {}", &pattern));
 
     // for each path generate a test-function and fold them to single tokenstream
@@ -264,6 +270,7 @@ pub fn test_resources(attrs: TokenStream, func: TokenStream) -> TokenStream {
             let item = quote! {
                 #[test]
                 #[allow(non_snake_case)]
+                # func_attrs
                 fn # test_ident () {
                     # func_ident ( #path_as_str .into() );
                 }
